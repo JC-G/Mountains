@@ -1,0 +1,57 @@
+#version 330 core
+layout(location = 0) in vec4 vertexPosition_modelSpace;
+layout(location = 1) in vec4 vertexNormal_modelSpace;
+precision highp float;
+
+out vec4 vertexPosition_worldSpace;
+out vec4 vertexNormal_worldSpace;
+out vec4 vertexNormal_camSpace;
+out vec4 eyeDirection_camSpace;
+out vec4 lightDirection_camSpace;
+out float vertexDistance;
+
+uniform mat4 V;
+uniform mat4 P;
+uniform vec4 lightPosition_worldSpace;
+
+
+
+float hash13(vec3 p3)
+{
+	p3  = fract(p3 * .1031);
+    p3 += dot(p3, p3.yzx + 19.19);
+    return fract((p3.x + p3.y) * p3.z);
+}
+
+void main(){
+	
+	
+	
+	vertexPosition_worldSpace = vertexPosition_modelSpace;
+	
+	vertexNormal_worldSpace = vertexNormal_modelSpace;
+	vertexNormal_camSpace = V*vertexNormal_worldSpace;
+	
+	vec4 vertexPosition_camSpace = V*vertexPosition_worldSpace;
+	eyeDirection_camSpace = vec4(0,0,0,0)-vertexPosition_camSpace;
+	
+	vertexNormal_camSpace = V*vertexNormal_modelSpace;
+	
+	vec4 lightPosition_camSpace = V*lightPosition_worldSpace;
+	lightDirection_camSpace = lightPosition_camSpace+eyeDirection_camSpace;
+	
+	vec4 vertexDistanceVector = inverse(V)*vec4(0,0,0,1) - vertexPosition_worldSpace;
+	vertexDistance = length(vertexDistanceVector.xz);
+	
+
+	//gl_Position = vec4(0.0);
+	
+	gl_Position = P*V*vertexPosition_worldSpace;
+	//gl_Position.w=0.0;
+	
+	
+	//gl_Position = 1.0-mod(vertexPosition_camSpace,2.0);
+	
+	
+	
+}

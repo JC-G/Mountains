@@ -1,0 +1,34 @@
+#version 330 core
+out vec4 color;
+in vec2 UV;
+uniform vec2 scrSize;
+uniform sampler2D renderedTexture;
+const mat3 kernel = mat3(1,1.,1.,
+					     1.,1.,1.,
+						  1.,1.,1.);
+uniform float time;
+void main()
+{
+	color = vec4(0.);
+	vec2 pixel = 1./scrSize;
+	vec2 UVw = UV;
+	vec2 UVt = UV-.5;
+	UVt.x *= scrSize.x/scrSize.y;
+	UVt*=2;
+	float ntime = time*0.005;
+	/*if(length(UVt) < .5)
+	{
+		UVt = mat2(cos(ntime),sin(ntime),-sin(ntime),cos(ntime))*UVt;
+		UVw = (UVt/2.);
+		UVw.x *= scrSize.y/scrSize.x;
+		UVw += .5;
+		color.rgb += vec3(-.1);
+		
+	} */
+	
+	color.rgb += texture(renderedTexture,UVw).rgb;
+	
+	
+	
+	color.a=1;
+}

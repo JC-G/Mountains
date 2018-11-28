@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="MarchingCubes" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/MarchingCubes" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="Engine" />
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/MarchingCubes" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add directory="Engine" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-DGLEW_STATIC" />
+		</Compiler>
+		<Unit filename="Engine/Camera.cpp" />
+		<Unit filename="Engine/Camera.h" />
+		<Unit filename="Engine/GameWindow.cpp" />
+		<Unit filename="Engine/GameWindow.h" />
+		<Unit filename="Engine/Shader.cpp" />
+		<Unit filename="Engine/Shader.h" />
+		<Unit filename="Engine/Util.cpp" />
+		<Unit filename="Engine/Util.h" />
+		<Unit filename="include/GPUMarchingCubes.h" />
+		<Unit filename="include/MarchingChunk.h" />
+		<Unit filename="include/MarchingChunkManager.h" />
+		<Unit filename="include/Octree.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="src/GPUMarchingCubes.cpp" />
+		<Unit filename="src/MarchingChunk.cpp" />
+		<Unit filename="src/MarchingChunkManager.cpp" />
+		<Unit filename="src/Octree.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

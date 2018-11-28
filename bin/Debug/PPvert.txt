@@ -1,0 +1,9 @@
+#version 330 core
+layout(location = 0) in vec3 vertexPosition_modelSpace;
+
+out vec2 UV;
+void main()
+{
+	UV = (vertexPosition_modelSpace.xy+vec2(1))/2.;
+	gl_Position = vec4(vertexPosition_modelSpace,1);
+}

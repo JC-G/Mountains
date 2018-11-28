@@ -1,0 +1,520 @@
+# depslib dependency file v1.0
+1521319055 source:f:\coding\c++\marching cubes world\engine\camera.cpp
+	"Camera.h"
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtx/transform.hpp>
+	<iostream>
+
+1521302742 f:\coding\c++\marching cubes world\engine\camera.h
+	<glm/glm.hpp>
+
+1521653854 source:f:\coding\c++\marching cubes world\engine\gamewindow.cpp
+	"GameWindow.h"
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtx/transform.hpp>
+	<vector>
+	<iostream>
+
+1521305333 f:\coding\c++\marching cubes world\engine\gamewindow.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	"Camera.h"
+	"Shader.h"
+	<memory>
+
+1521303028 source:f:\coding\c++\marching cubes world\engine\shader.cpp
+	"Shader.h"
+	"Util.h"
+
+1521302913 f:\coding\c++\marching cubes world\engine\shader.h
+	<map>
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+
+1521302911 source:f:\coding\c++\marching cubes world\engine\util.cpp
+	"Util.h"
+
+1521303049 f:\coding\c++\marching cubes world\engine\util.h
+	<stdio.h>
+	<stdlib.h>
+	<iostream>
+	<fstream>
+	<vector>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<btBulletDynamicsCommon.h>
+	<glm/glm.hpp>
+
+1521399557 source:f:\coding\c++\marching cubes world\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+	<iostream>
+	"GameWindow.h"
+	"Util.h"
+	"MarchingChunk.h"
+	"MarchingChunkManager.h"
+
+1521653395 source:f:\coding\c++\marching cubes world\src\marchingchunk.cpp
+	"MarchingChunk.h"
+	"GameWindow.h"
+	"DistanceFunctions.h"
+	"Tables.h"
+	<iostream>
+
+1521652894 f:\coding\c++\marching cubes world\include\marchingchunk.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+	<vector>
+	<atomic>
+	<btBulletDynamicsCommon.h>
+	<mutex>
+	<unordered_map>
+	<limits>
+	<vector>
+	<thread>
+	<mutex>
+
+1521309069 source:f:\coding\c++\marching cubes world\src\marchingchunkmanager.cpp
+	"MarchingChunkManager.h"
+
+1521304491 f:\coding\c++\marching cubes world\include\marchingchunkmanager.h
+	<unordered_map>
+	"MarchingChunk.h"
+	<memory>
+
+1521654643 source:f:\coding\c++\marching cubes world\src\distancefunctions.cpp
+	"DistanceFunctions.h"
+	<vector>
+
+1521566950 f:\coding\c++\marching cubes world\include\distancefunctions.h
+	"Noise.h"
+	<glm/glm.hpp>
+
+1521307092 source:f:\coding\c++\marching cubes world\src\tables.cpp
+	"Tables.h"
+
+1521307095 f:\coding\c++\marching cubes world\include\tables.h
+
+1521654480 source:f:\coding\c++\marching cubes world\src\noise.cpp
+	"Noise.h"
+
+1521654480 f:\coding\c++\marching cubes world\include\noise.h
+	<glm/glm.hpp>
+
+1526570444 source:f:\coding\c++\marching cubes\marching cubes world - gpu\engine\camera.cpp
+	"Camera.h"
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtx/transform.hpp>
+	<iostream>
+
+1521306342 f:\coding\c++\marching cubes\marching cubes world - gpu\engine\camera.h
+	<glm/glm.hpp>
+
+1527610048 source:f:\coding\c++\marching cubes\marching cubes world - gpu\engine\gamewindow.cpp
+	"GameWindow.h"
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtx/transform.hpp>
+	<vector>
+	<iostream>
+	"Octree.h"
+	"MarchingChunkManager.h"
+
+1527610008 f:\coding\c++\marching cubes\marching cubes world - gpu\engine\gamewindow.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	"Camera.h"
+	"Shader.h"
+	<memory>
+
+1521306513 f:\coding\c++\marching cubes\marching cubes world - gpu\engine\shader.h
+	<map>
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+
+1521306628 source:f:\coding\c++\marching cubes\marching cubes world - gpu\engine\shader.cpp
+	"Shader.h"
+	"Util.h"
+
+1526215101 f:\coding\c++\marching cubes\marching cubes world - gpu\engine\util.h
+	<stdio.h>
+	<stdlib.h>
+	<iostream>
+	<fstream>
+	<vector>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+
+1522923607 source:f:\coding\c++\marching cubes\marching cubes world - gpu\engine\util.cpp
+	"Util.h"
+
+1527610305 source:f:\coding\c++\marching cubes\marching cubes world - gpu\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+	<iostream>
+	"GameWindow.h"
+	"Util.h"
+	"MarchingChunk.h"
+	"MarchingChunkManager.h"
+	"GPUMarchingCubes.h"
+	"Tables.h"
+	"Octree.h"
+
+1527103557 f:\coding\c++\marching cubes\marching cubes world - gpu\include\marchingchunk.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+	<vector>
+	<atomic>
+	<mutex>
+	<unordered_map>
+	<limits>
+	<vector>
+	<thread>
+	<mutex>
+
+1526138548 f:\coding\c++\marching cubes\marching cubes world - gpu\include\marchingchunkmanager.h
+	<unordered_map>
+	"MarchingChunk.h"
+	<memory>
+
+1522869270 source:f:\coding\c++\marching cubes\marching cubes world - gpu\src\distancefunctions.cpp
+	"DistanceFunctions.h"
+	<vector>
+
+1521570550 f:\coding\c++\marching cubes\marching cubes world - gpu\include\distancefunctions.h
+	"Noise.h"
+	<glm/glm.hpp>
+
+1521658080 f:\coding\c++\marching cubes\marching cubes world - gpu\include\noise.h
+	<glm/glm.hpp>
+
+1526138547 source:f:\coding\c++\marching cubes\marching cubes world - gpu\src\marchingchunkmanager.cpp
+	"MarchingChunkManager.h"
+
+1521737324 source:f:\coding\c++\marching cubes\marching cubes world - gpu\src\noise.cpp
+	"Noise.h"
+
+1522924506 source:f:\coding\c++\marching cubes\marching cubes world - gpu\src\tables.cpp
+	"Tables.h"
+
+1521310695 f:\coding\c++\marching cubes\marching cubes world - gpu\include\tables.h
+
+1526903284 source:f:\coding\c++\marching cubes\marching cubes world - gpu\src\marchingchunk.cpp
+	"MarchingChunk.h"
+	"GameWindow.h"
+	"DistanceFunctions.h"
+	"Tables.h"
+	<iostream>
+	<GPUMarchingCubes.h>
+	"MarchingChunkManager.h"
+	<chrono>
+	<algorithm>
+
+1525000657 f:\coding\c++\marching cubes\marching cubes world - gpu\include\gpumarchingcubes.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+
+1527103412 source:f:\coding\c++\marching cubes\marching cubes world - gpu\src\gpumarchingcubes.cpp
+	"GPUMarchingCubes.h"
+	"Util.h"
+	"MarchingChunk.h"
+
+1526903642 source:f:\coding\c++\marching cubes\marching cubes world - gpu\src\octree.cpp
+	"Octree.h"
+	<iostream>
+
+1526150262 f:\coding\c++\marching cubes\marching cubes world - gpu\include\octree.h
+	<vector>
+	<memory>
+	<glm/glm.hpp>
+	"MarchingChunk.h"
+
+1526570444 source:f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\camera.cpp
+	"Camera.h"
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtx/transform.hpp>
+	<iostream>
+
+1521306342 f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\camera.h
+	<glm/glm.hpp>
+
+1527767899 source:f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\gamewindow.cpp
+	"GameWindow.h"
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtx/transform.hpp>
+	<vector>
+	<iostream>
+	"Octree.h"
+	"MarchingChunkManager.h"
+
+1527610008 f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\gamewindow.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	"Camera.h"
+	"Shader.h"
+	<memory>
+
+1521306513 f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\shader.h
+	<map>
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+
+1526150262 f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\octree.h
+	<vector>
+	<memory>
+	<glm/glm.hpp>
+	"MarchingChunk.h"
+
+1528743348 f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\marchingchunk.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+	<vector>
+	<atomic>
+	<mutex>
+	<unordered_map>
+	<limits>
+	<vector>
+	<thread>
+	<mutex>
+
+1526138548 f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\marchingchunkmanager.h
+	<unordered_map>
+	"MarchingChunk.h"
+	<memory>
+
+1521306628 source:f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\shader.cpp
+	"Shader.h"
+	"Util.h"
+
+1526215101 f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\util.h
+	<stdio.h>
+	<stdlib.h>
+	<iostream>
+	<fstream>
+	<vector>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+
+1530562200 source:f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\util.cpp
+	"Util.h"
+
+1527610305 source:f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+	<iostream>
+	"GameWindow.h"
+	"Util.h"
+	"MarchingChunk.h"
+	"MarchingChunkManager.h"
+	"GPUMarchingCubes.h"
+	"Tables.h"
+	"Octree.h"
+
+1525000657 f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\gpumarchingcubes.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+
+1521310695 f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\tables.h
+
+1527612347 source:f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\src\gpumarchingcubes.cpp
+	"GPUMarchingCubes.h"
+	"Util.h"
+	"MarchingChunk.h"
+
+1526903284 source:f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\src\marchingchunk.cpp
+	"MarchingChunk.h"
+	"GameWindow.h"
+	"DistanceFunctions.h"
+	"Tables.h"
+	<iostream>
+	<GPUMarchingCubes.h>
+	"MarchingChunkManager.h"
+	<chrono>
+	<algorithm>
+
+1521570550 f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\distancefunctions.h
+	"Noise.h"
+	<glm/glm.hpp>
+
+1521658080 f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\noise.h
+	<glm/glm.hpp>
+
+1526138547 source:f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\src\marchingchunkmanager.cpp
+	"MarchingChunkManager.h"
+
+1528743744 source:f:\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\src\octree.cpp
+	"Octree.h"
+	<iostream>
+
+1526566846 source:c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\camera.cpp
+	"Camera.h"
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtx/transform.hpp>
+	<iostream>
+
+1521306344 c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\camera.h
+	<glm/glm.hpp>
+
+1527764300 source:c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\gamewindow.cpp
+	"GameWindow.h"
+	<glm/gtc/matrix_transform.hpp>
+	<glm/gtx/transform.hpp>
+	<vector>
+	<iostream>
+	"Octree.h"
+	"MarchingChunkManager.h"
+
+1527606410 c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\gamewindow.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	"Camera.h"
+	"Shader.h"
+	<memory>
+
+1521306514 c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\shader.h
+	<map>
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+
+1526146664 c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\octree.h
+	<vector>
+	<memory>
+	<glm/glm.hpp>
+	"MarchingChunk.h"
+
+1528739750 c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\marchingchunk.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+	<vector>
+	<atomic>
+	<mutex>
+	<unordered_map>
+	<limits>
+	<vector>
+	<thread>
+	<mutex>
+
+1526134950 c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\marchingchunkmanager.h
+	<unordered_map>
+	"MarchingChunk.h"
+	<memory>
+
+1521306630 source:c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\shader.cpp
+	"Shader.h"
+	"Util.h"
+
+1526211502 c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\util.h
+	<stdio.h>
+	<stdlib.h>
+	<iostream>
+	<fstream>
+	<vector>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+
+1530558602 source:c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\engine\util.cpp
+	"Util.h"
+
+1527606706 source:c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+	<iostream>
+	"GameWindow.h"
+	"Util.h"
+	"MarchingChunk.h"
+	"MarchingChunkManager.h"
+	"GPUMarchingCubes.h"
+	"Tables.h"
+	"Octree.h"
+
+1524997058 c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\gpumarchingcubes.h
+	<stdio.h>
+	<stdlib.h>
+	<GL/glew.h>
+	<GL/glfw3.h>
+	<glm/glm.hpp>
+
+1521310696 c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\tables.h
+
+1527608748 source:c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\src\gpumarchingcubes.cpp
+	"GPUMarchingCubes.h"
+	"Util.h"
+	"MarchingChunk.h"
+
+1526899686 source:c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\src\marchingchunk.cpp
+	"MarchingChunk.h"
+	"GameWindow.h"
+	"DistanceFunctions.h"
+	"Tables.h"
+	<iostream>
+	<GPUMarchingCubes.h>
+	"MarchingChunkManager.h"
+	<chrono>
+	<algorithm>
+
+1521570552 c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\distancefunctions.h
+	"Noise.h"
+	<glm/glm.hpp>
+
+1521658082 c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\include\noise.h
+	<glm/glm.hpp>
+
+1526134948 source:c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\src\marchingchunkmanager.cpp
+	"MarchingChunkManager.h"
+
+1528743746 source:c:\coding\coding\c++\marching cubes\marching cubes world - gpu - conversion to esn\src\octree.cpp
+	"Octree.h"
+	<iostream>
+

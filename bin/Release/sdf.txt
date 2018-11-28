@@ -1,0 +1,218 @@
+#version 430
+const mat2 m = mat2(0.8,-0.6,0.6,0.8);
+const float HASHSCALE1 = .1031;
+const vec3 HASHSCALE3 = vec3(.1031, .1030, .0973);
+const vec4  HASHSCALE4= vec4(.1031, .1030, .0973, .1099);
+const int gSize = 16;
+uniform float chunkStride;
+
+//note negative values make terrain
+uint getArrID(uvec3 gid)
+{
+	return gid.x+gid.y*(gSize+1)+gid.z*(gSize+1)*(gSize+1);
+}
+
+
+float opIntersect(float field1,float field2)
+{
+	return max(field1,field2);
+}
+float opUnion(float field1,float field2)
+{
+	return min(field1,field2);
+}
+
+float logMax(float a,float b)
+{
+	if (a < 0 && b >= 0)
+	{
+		return b;
+	}
+	if (b < 0 && a >= 0)
+	{
+		return a;
+	}
+	float aT = log(abs(a));
+	float bT = log(abs(b));
+	if (b <= 0 && a <= 0)
+	{
+		if (aT > bT)
+		{
+			return b;
+		}else{
+			return a;
+		}
+	}
+	if (aT < bT)
+	{
+		return b;
+	}
+	return a;
+	
+	
+}
+float opSubtract(float field1,float field2)// remove d2
+{
+	return max(field1,-field2);
+}
+float hash13(vec3 p3)
+{
+	p3  = fract(p3 * HASHSCALE1);
+    p3 += dot(p3, p3.yzx + 19.19);
+    return fract((p3.x + p3.y) * p3.z);
+}
+float billow(float x)
+{
+	return abs(2.*x-1.);
+}
+float ridge(float x)
+{
+	return 1.-billow(x);
+}
+vec3 hash33(vec3 p3)
+{
+	bool use1 = false;
+	if (use1)
+	{
+		return fract(sin(p3)*43578.831);
+	}
+	else
+	{
+		p3 = fract(p3 * HASHSCALE3);
+		p3 += dot(p3, p3.yxz+19.19);
+		return fract((p3.xxy + p3.yxx)*p3.zyx);
+	}
+}
+
+float noise3( in vec3 x )
+{
+    vec3 p = floor(x);
+    vec3 w = fract(x);
+    
+    vec3 u = w*w*w*(w*(w*6.0-15.0)+10.0);
+
+    float a = hash13( p+vec3(0,0,0) );
+    float b = hash13( p+vec3(1,0,0) );
+    float c = hash13( p+vec3(0,1,0) );
+    float d = hash13( p+vec3(1,1,0) );
+    float e = hash13( p+vec3(0,0,1) );
+    float f = hash13( p+vec3(1,0,1) );
+    float g = hash13( p+vec3(0,1,1) );
+    float h = hash13( p+vec3(1,1,1) );
+
+    float k0 =   a;
+    float k1 =   b - a;
+    float k2 =   c - a;
+    float k3 =   e - a;
+    float k4 =   a - b - c + d;
+    float k5 =   a - c - e + g;
+    float k6 =   a - b - e + f;
+    float k7 = - a + b + c - d + e - f - g + h;
+
+    return (k0 + k1*u.x + k2*u.y + k3*u.z + k4*u.x*u.y + k5*u.y*u.z + k6*u.z*u.x + k7*u.x*u.y*u.z);
+}
+float perlin3(vec3 x) //multiple octaves of noise3
+{
+	int octaves = 6;
+	float squish = 1.0;
+	float scale = 1.0;
+	float T = 0.;
+	float res = 0.;
+	for(int i=0;i<octaves;i++)
+	{
+		res+=scale*noise3(x*squish);
+		T+=scale;
+		scale*=.5;
+		squish*=2.;
+	}
+	return res/T;
+}
+float hash12(vec2 p)
+{
+	vec3 p3  = fract(vec3(p.xyx) * HASHSCALE1);
+    p3 += dot(p3, p3.yzx + 19.19);
+    return fract((p3.x + p3.y) * p3.z);
+}
+
+vec3 noised2(vec2 x ) //noise, dx,dy
+{
+    vec2 f = fract(x);
+    vec2 u = f*f*(3.0-2.0*f);
+
+    // texel fetch version
+    vec2 p = floor(x);
+    float a = hash12(p+vec2(0,0));
+    float b = hash12(p+vec2(1,0));
+    float c = hash12(p+vec2(0,1));
+    float d = hash12(p+vec2(1,1));
+
+
+    return vec3(a+(b-a)*u.x+(c-a)*u.y+(a-b-c+d)*u.x*u.y,
+                     6.0*f*(1.0-f)*(vec2(b-a,c-a)+vec2(a-b-c+d)*u.yx));
+}
+float terrain(vec2 p ) //iq derivative eroded terrain
+{
+    float a = 0.0;
+    float b = 1.0;
+    float t = 0;
+    vec2  d = vec2(0.0);
+	int octaves = 7;//-int(log2(chunkStride));
+    for( int i=0; i<octaves; i++ )
+    {
+        vec3 n = noised2(p);
+        d += n.yz;
+        t+= b;
+        a += b*n.x/(1.0+2.0*dot(d,d));
+        b *= 0.5;
+        p = m*p*2.0;
+    }
+    return a/t;
+}
+
+
+float torus(vec3 inPos, vec3 origin, float R, float r) //torus
+{
+	inPos -= origin;
+	vec2 tmp = inPos.xy;
+	float p1 = length(tmp)-R;
+	return p1*p1+inPos.z*inPos.z-r*r;
+}
+
+
+
+float lengthn(vec3 inPos,float n) //length in n metric 
+{
+	vec3 inN = pow(abs(inPos),vec3(n));
+	return pow(inN.x+inN.y+inN.z,1./n);
+}
+
+float u(float x)
+{
+	return (3.-2.*x)*x*x;
+}
+
+float terrace(float inHeight, float dropFactor, float terraceHeight)
+{
+	inHeight/=terraceHeight;
+	float T = floor(inHeight);
+	T+= pow(u(fract(inHeight)),dropFactor);
+	return T*terraceHeight;
+}
+float distFunc(vec3 inPos)
+{
+	//return dot(inPos,inPos)-1e6;
+	//return cave;
+	float hillIntensityMap = smoothstep(0.1,0.9,noised2(inPos.xz/1000.).x);
+	
+	float hillMap = pow(terrain(inPos.xz/500.),1.);
+	inPos += perlin3(inPos/100.)*30.;
+	float terr = inPos.y - 200.-500.*hillIntensityMap*hillMap;
+	
+	
+	//float cave = 1000.*(ridge(perlin3(inPos/1000.))-.85);
+	
+	return terr;//opUnion(terr,cave);
+	
+	
+
+}

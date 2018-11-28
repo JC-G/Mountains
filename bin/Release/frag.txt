@@ -1,0 +1,89 @@
+#version 330 core
+precision highp float;
+layout(location = 0) out vec4 color;
+
+
+in vec4 vertexNormal_worldSpace;
+in vec4 vertexPosition_worldSpace;
+in vec4 vertexNormal_camSpace;
+in vec4 eyeDirection_camSpace;
+in vec4 lightDirection_camSpace;
+in float vertexDistance;
+
+uniform sampler2D GrassSampler;
+uniform sampler2D RockSampler;
+
+
+uniform vec4 lightPosition_worldSpace;
+
+void main()
+{
+	vec3 UVW = mod(vertexPosition_worldSpace.xyz/100.,1.);
+	
+	
+	float diffuseFactor = 1;
+	float specularFactor = 0.2;
+	float ambientFactor = 0.1;
+	float specularShine = 4.;
+	float maxView = 10000.;
+	vec3 lightColor = vec3(1,1,1);
+	float lightPower = 100;
+	vec3 MaterialDiffuseColor;
+	vec3 MaterialAmbientColor;
+	vec3 MaterialSpecularColor = vec3(.6,.5,1);
+	
+	
+	vec4 triCol=vec4(0);
+	vec3 blending = abs(vertexNormal_worldSpace.xyz);
+	blending = pow(normalize(max(blending,0.00001)),vec3(5.));
+	float b = blending.x + blending.y+blending.z;
+	blending /= b;
+	triCol += texture(RockSampler,UVW.yz*3.)*blending.x;
+	triCol += texture(GrassSampler,UVW.xz*5.)*blending.y;
+	triCol += texture(RockSampler,UVW.yx*3.)*blending.z;
+	
+	
+	specularFactor = 0.2+(1.-blending.y)/4.; //make grass less reflective
+	// triCol = texture(RockSampler,UVW.xy);
+	
+	
+	
+	
+	MaterialDiffuseColor.xyz=triCol.rgb;
+	// MaterialDiffuseColor.xyz = texture(GrassSampler,UVW.xy).rgb+texture(RockSampler,UVW.xy).rgb;
+	
+	
+	MaterialAmbientColor = MaterialDiffuseColor;
+	
+	float lightDistance = length(lightPosition_worldSpace.xyz-vertexPosition_worldSpace.xyz);
+	
+	vec3 n = normalize(vertexNormal_camSpace.xyz);
+	vec3 l = normalize(lightDirection_camSpace.xyz);
+	float cosTheta = clamp(dot(n,l),0,1);
+	
+	vec3 E = normalize(eyeDirection_camSpace.xyz);
+	vec3 R = reflect(-l,n);
+	float cosAlpha = clamp(dot(E,R),0,1);
+	float brightness = 3.;//min(lightPower/(lightDistance),2.);
+	color.xyz = MaterialAmbientColor*ambientFactor + 
+		diffuseFactor*MaterialDiffuseColor*lightColor*cosTheta*brightness+
+		specularFactor*MaterialSpecularColor*lightColor*pow(cosAlpha,specularShine)*brightness;
+	
+	
+	
+	float camDistance = vertexDistance;
+	//float fogFactor = camDistance/maxView;
+	//fogFactor = clamp(fogFactor,0,1);
+	//vec3 fogColor = vec3(1,0,1);
+	//fogFactor = pow(fogFactor,3);
+	//color.xyz = mix(color.xyz,fogColor,fogFactor);
+	
+	//color.rgb=UVW;
+	//color.xyz = vec3(1,0,0);
+	color.a = 1;
+	
+	
+	
+	
+	
+}

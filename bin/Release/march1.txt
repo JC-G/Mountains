@@ -1,0 +1,69 @@
+
+layout(binding=1) buffer Grid
+{
+	float GridData[];
+};
+layout(local_size_x=8,local_size_y=8,local_size_z=8) in;
+uniform vec3 chunkPosition;
+
+void generate(uvec3 gid)
+{
+	uint arrID = getArrID(gid);
+
+	GridData[arrID] = distFunc(gid*chunkStride+chunkPosition);
+	
+}
+
+
+
+void main()
+{
+	
+	uvec3 gid = gl_GlobalInvocationID;
+	if (gid.x >= gSize || gid.y >= gSize || gid.z >= gSize)
+	{
+		return;
+	}
+	generate(gid);
+	
+	if (gid.x==gSize-1)
+	{
+		generate(gid+uvec3(1,0,0));
+	}
+	if (gid.y==gSize-1)
+	{
+		generate(gid+uvec3(0,1,0));
+	}
+	if (gid.z==gSize-1)
+	{
+		generate(gid+uvec3(0,0,1));
+	}
+	
+	if (gid.x==gSize-1 && gid.y==gSize-1)
+	{
+		generate(gid+uvec3(1,1,0));
+	}
+	if (gid.x==gSize-1 && gid.z==gSize-1)
+	{
+		generate(gid+uvec3(1,0,1));
+	}
+	if (gid.y==gSize-1 && gid.z==gSize-1)
+	{
+		generate(gid+uvec3(0,1,1));
+	}
+	
+	if (gid.x==gSize-1 && gid.y==gSize-1 && gid.z==gSize-1)
+	{
+		generate(gid+uvec3(1,1,1));
+	}
+
+
+
+
+
+
+
+
+}
+
+

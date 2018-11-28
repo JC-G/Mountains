@@ -1,0 +1,226 @@
+layout(binding=1) buffer Grid
+{
+	float GridData[];
+};
+uniform uint marchableCount;
+uniform uint pointCount;
+uniform vec3 chunkPosition;
+
+layout(std430, binding = 4) buffer X	{uvec4 marchableList[];}; //format is x,y,z,cubeIndex
+
+layout(std430, binding = 5) buffer v {vec4 vertices[];};
+layout(std430,binding = 6) buffer n {vec4 normals[];};
+layout(binding = 7) uniform atomic_uint triCount;
+layout(binding = 8) buffer T
+{
+	int triTable[];
+};
+
+layout(local_size_x=256,local_size_y=1,local_size_z=1) in;
+
+
+const int edgeTable[256]={
+0x0  , 0x109, 0x203, 0x30a, 0x406, 0x50f, 0x605, 0x70c,
+0x80c, 0x905, 0xa0f, 0xb06, 0xc0a, 0xd03, 0xe09, 0xf00,
+0x190, 0x99 , 0x393, 0x29a, 0x596, 0x49f, 0x795, 0x69c,
+0x99c, 0x895, 0xb9f, 0xa96, 0xd9a, 0xc93, 0xf99, 0xe90,
+0x230, 0x339, 0x33 , 0x13a, 0x636, 0x73f, 0x435, 0x53c,
+0xa3c, 0xb35, 0x83f, 0x936, 0xe3a, 0xf33, 0xc39, 0xd30,
+0x3a0, 0x2a9, 0x1a3, 0xaa , 0x7a6, 0x6af, 0x5a5, 0x4ac,
+0xbac, 0xaa5, 0x9af, 0x8a6, 0xfaa, 0xea3, 0xda9, 0xca0,
+0x460, 0x569, 0x663, 0x76a, 0x66 , 0x16f, 0x265, 0x36c,
+0xc6c, 0xd65, 0xe6f, 0xf66, 0x86a, 0x963, 0xa69, 0xb60,
+0x5f0, 0x4f9, 0x7f3, 0x6fa, 0x1f6, 0xff , 0x3f5, 0x2fc,
+0xdfc, 0xcf5, 0xfff, 0xef6, 0x9fa, 0x8f3, 0xbf9, 0xaf0,
+0x650, 0x759, 0x453, 0x55a, 0x256, 0x35f, 0x55 , 0x15c,
+0xe5c, 0xf55, 0xc5f, 0xd56, 0xa5a, 0xb53, 0x859, 0x950,
+0x7c0, 0x6c9, 0x5c3, 0x4ca, 0x3c6, 0x2cf, 0x1c5, 0xcc ,
+0xfcc, 0xec5, 0xdcf, 0xcc6, 0xbca, 0xac3, 0x9c9, 0x8c0,
+0x8c0, 0x9c9, 0xac3, 0xbca, 0xcc6, 0xdcf, 0xec5, 0xfcc,
+0xcc , 0x1c5, 0x2cf, 0x3c6, 0x4ca, 0x5c3, 0x6c9, 0x7c0,
+0x950, 0x859, 0xb53, 0xa5a, 0xd56, 0xc5f, 0xf55, 0xe5c,
+0x15c, 0x55 , 0x35f, 0x256, 0x55a, 0x453, 0x759, 0x650,
+0xaf0, 0xbf9, 0x8f3, 0x9fa, 0xef6, 0xfff, 0xcf5, 0xdfc,
+0x2fc, 0x3f5, 0xff , 0x1f6, 0x6fa, 0x7f3, 0x4f9, 0x5f0,
+0xb60, 0xa69, 0x963, 0x86a, 0xf66, 0xe6f, 0xd65, 0xc6c,
+0x36c, 0x265, 0x16f, 0x66 , 0x76a, 0x663, 0x569, 0x460,
+0xca0, 0xda9, 0xea3, 0xfaa, 0x8a6, 0x9af, 0xaa5, 0xbac,
+0x4ac, 0x5a5, 0x6af, 0x7a6, 0xaa , 0x1a3, 0x2a9, 0x3a0,
+0xd30, 0xc39, 0xf33, 0xe3a, 0x936, 0x83f, 0xb35, 0xa3c,
+0x53c, 0x435, 0x73f, 0x636, 0x13a, 0x33 , 0x339, 0x230,
+0xe90, 0xf99, 0xc93, 0xd9a, 0xa96, 0xb9f, 0x895, 0x99c,
+0x69c, 0x795, 0x49f, 0x596, 0x29a, 0x393, 0x99 , 0x190,
+0xf00, 0xe09, 0xd03, 0xc0a, 0xb06, 0xa0f, 0x905, 0x80c,
+0x70c, 0x605, 0x50f, 0x406, 0x30a, 0x203, 0x109, 0x0   };
+
+vec3 VertexInterp(float isolevel, vec3 p1, vec3 p2, float valp1, float valp2)
+{
+
+    float mu;
+    vec3 p;
+
+    if (abs(isolevel-valp1) < 0.00001)
+    {
+        return(p1);
+
+    }
+    if (abs(isolevel-valp2) < 0.00001)
+    {
+        return(p2);
+
+    }
+    if (abs(valp1-valp2) < 0.00001)
+    {
+        return(p1);
+
+    }
+    mu = (isolevel - valp1) / (valp2 - valp1);
+    p.x = p1.x + mu * (p2.x - p1.x);
+    p.y = p1.y + mu * (p2.y - p1.y);
+    p.z = p1.z + mu * (p2.z - p1.z);
+
+    return(p);
+
+}
+
+void main()
+{
+	
+	if (gl_GlobalInvocationID.x < marchableCount)
+	{
+	uvec3 gid = marchableList[gl_GlobalInvocationID.x].xyz;
+		vec3 vertlist[12];
+		// for (int filler = 0; filler < 12;filler++)
+		// {
+			// vertlist[filler]=vec3(0.);
+		// }
+		
+		float gridCells[8];
+		uvec3 gridPos[8];
+
+		gridPos[0] = gid;
+		gridPos[1] = gid+uvec3(1,0,0);
+		gridPos[2] = gid+uvec3(1,1,0);
+		gridPos[3] = gid+uvec3(0,1,0);
+		gridPos[4] = gid+uvec3(0,0,1);
+		gridPos[5] = gid+uvec3(1,0,1);
+		gridPos[6] = gid+uvec3(1,1,1);
+		gridPos[7] = gid+uvec3(0,1,1);
+	
+	
+	for (int i = 0; i < 8; i++)
+	{
+		gridCells[i] = GridData[getArrID(gridPos[i])];
+	}
+	
+	int E = int(edgeTable[marchableList[gl_GlobalInvocationID.x].w]);
+		if (E != 0 && E != 255)
+		{
+		uint cubeIndex = marchableList[gl_GlobalInvocationID.x].w;
+			/* Find the vertices where the surface intersects the cube */
+			if ((E & 1) != 0)
+			{
+				vertlist[0] = VertexInterp(0,gridPos[0],gridPos[1],gridCells[0],gridCells[1]);
+			}
+			if ((E & 2) != 0)
+			{
+				vertlist[1] = VertexInterp(0,gridPos[1],gridPos[2],gridCells[1],gridCells[2]);
+			}
+			if ((E & 4) != 0)
+			{
+				vertlist[2] = VertexInterp(0,gridPos[2],gridPos[3],gridCells[2],gridCells[3]);
+			}
+			if ((E & 8) != 0)
+			{
+				vertlist[3] = VertexInterp(0,gridPos[3],gridPos[0],gridCells[3],gridCells[0]);
+			}
+			if ((E & 16) != 0)
+			{
+				vertlist[4] = VertexInterp(0,gridPos[4],gridPos[5],gridCells[4],gridCells[5]);
+			}
+			if ((E & 32) != 0)
+			{
+				vertlist[5] = VertexInterp(0,gridPos[5],gridPos[6],gridCells[5],gridCells[6]);
+			}
+			if ((E & 64) != 0)
+			{
+				vertlist[6] = VertexInterp(0,gridPos[6],gridPos[7],gridCells[6],gridCells[7]);
+			}
+			if ((E & 128) != 0)
+			{
+				vertlist[7] = VertexInterp(0,gridPos[7],gridPos[4],gridCells[7],gridCells[4]);
+			}
+			if ((E & 256) != 0)
+			{
+				vertlist[8] = VertexInterp(0,gridPos[0],gridPos[4],gridCells[0],gridCells[4]);
+			}
+			if ((E & 512) != 0)
+			{
+				vertlist[9] = VertexInterp(0,gridPos[1],gridPos[5],gridCells[1],gridCells[5]);
+			}
+			if ((E & 1024) != 0)
+			{
+				vertlist[10] = VertexInterp(0,gridPos[2],gridPos[6],gridCells[2],gridCells[6]);
+			}
+			if ((E & 2048) != 0)
+			{
+				vertlist[11] = VertexInterp(0,gridPos[3],gridPos[7],gridCells[3],gridCells[7]);
+			}
+						
+						
+            
+			
+			
+			
+			for (int tCount = 0; triTable[tCount+16*cubeIndex] != -1; tCount+=3)
+			{
+				uint index = atomicCounterIncrement(triCount);
+				
+				
+				// vec3 vert1 = vertlist[triTable[cubeIndex*16+tCount+0]];
+				// vec3 vert2 = vertlist[triTable[cubeIndex*16+tCount+1]];
+				// vec3 vert3 = vertlist[triTable[cubeIndex*16+tCount+2]];
+				
+				// vertices[3*index+0] = vec4(vert1,1);//vertPos;
+				// vertices[3*index+1] = vec4(vert2,1);//vertPos;
+				// vertices[3*index+2] = vec4(vert3,1);//vertPos;
+				
+				// normals[3*index+0] = normalize(vec4(cross(vert1-vert2,vert1-vert3),0));
+				// normals[3*index+1] = normalize(vec4(cross(vert3-vert2,vert1-vert2),0));
+				// normals[3*index+2] = normalize(vec4(cross(vert3-vert1,vert3-vert2),0));
+				
+				
+				
+				
+				for (int t = 0; t < 3;t++)
+				{
+					vec3 vertPos = vertlist[triTable[cubeIndex*16+tCount+t]]*chunkStride+chunkPosition;
+					vertices[3*index+t] = vec4(vertPos,1);//vertPos;
+					
+					float eps = 0.1;
+					float dX = (distFunc(vertPos+vec3(eps,0,0))-distFunc(vertPos));
+					float dY = (distFunc(vertPos+vec3(0,eps,0))-distFunc(vertPos));
+					float dZ = (distFunc(vertPos+vec3(0,0,eps))-distFunc(vertPos));
+					
+					
+					
+					normals[3*index+t] = normalize(vec4(dX,dY,dZ,0));
+				}
+			}
+			
+				
+				
+			
+				
+				
+                
+
+
+            
+		}
+
+		
+	}
+	
+	
+}
